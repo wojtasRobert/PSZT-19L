@@ -1,0 +1,6 @@
+# files from PyCharm's dir .idea
+# .xml
+*.xml
+
+# .iml
+*.iml
