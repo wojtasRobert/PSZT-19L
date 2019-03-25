@@ -38,4 +38,4 @@ Załóżmy, że mamy N sześciennych, ponumerowanych klocków ułożonych w konf
 
 * Python to dobry wybór
 * program ma działać w trybie wsadowym, prezentacja nie jest bardzo istotna
-* nasz problem jest klasyczny (czyżby Block Relocation Problem?), można znaleźć heurystyki w internecie
+* nasz problem jest klasyczny (Blocks World Problem), można znaleźć heurystyki w internecie (https://ai.stackexchange.com/a/4110)
