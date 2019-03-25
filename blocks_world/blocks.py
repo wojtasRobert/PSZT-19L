@@ -7,10 +7,16 @@ from typing import List, Callable
 class State:
     BLOCK_PADDING = 2
     TABLE_PADDING = 1
-    heuristics: List[Callable[[List[List[int]]], int]]
-    stacks: List[List[int]]
 
-    def __init__(self, heuristics: List[Callable[[List[List[int]]], int]], layout: List[List[int]] = None):
+    STACKS_TYPE = List[List[int]]
+    FINAL_CHECK_TYPE = Callable[[STACKS_TYPE], bool]
+    HEURISTIC_TYPE = Callable[[STACKS_TYPE], int]
+    HEURISTICS_TYPE = List[Callable[[STACKS_TYPE], int]]
+
+    heuristics: HEURISTICS_TYPE
+    stacks: STACKS_TYPE
+
+    def __init__(self, heuristics: HEURISTICS_TYPE, layout: STACKS_TYPE = None):
         self.heuristics = heuristics
 
         if layout is None:
@@ -80,5 +86,5 @@ class State:
                        .rjust(max_digits + self.BLOCK_PADDING) for stack in self.stacks)
 
 
-def blocks_outside_first_stack(stacks: List[List[int]]):
+def blocks_outside_first_stack(stacks: State.STACKS_TYPE) -> int:
     return sum(len(stack) for stack in stacks) - len(stacks[0])
