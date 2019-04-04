@@ -84,6 +84,9 @@ class State:
             for destination in range(-1, len(self.stacks)):
                 if source == destination:
                     continue
+                if len(self.stacks[source]) == 1 and destination == -1:
+                    # don't create a new stack from a stack that has only one block
+                    continue
                 state = self.copy()
                 state.move(source, destination)
                 states.append(state)
