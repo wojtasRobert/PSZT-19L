@@ -52,7 +52,7 @@ class State:
         Calculates the value of the heuristic function for the state.
         """
         # TODO: take all heuristics into account, not just the first
-        return self.heuristics[0](self.stacks)
+        return self.heuristics[0](self.stacks) + self.heuristics[1](self.stacks)
 
     def move(self, source, destination):
         """
@@ -103,6 +103,15 @@ class State:
 
 def blocks_outside_first_stack(stacks: State.STACKS_TYPE) -> int:
     return sum(len(stack) for stack in stacks) - len(stacks[0])
+
+
+def blocks_sorted_on_first_stack(stacks: State.STACKS_TYPE):  # -> int:
+    stack = stacks[0]
+    h = 6 - len(stack)
+    for i in range(len(stack)):
+        if stack[i] != i+1:
+            h = h + 1
+    return h
 
 
 def are_blocks_sorted_on_one_stack(stacks: State.STACKS_TYPE, reverse=False) -> bool:
