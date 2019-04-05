@@ -2,6 +2,7 @@ from copy import deepcopy
 from functools import reduce
 from itertools import chain
 from typing import List, Callable
+from random import shuffle, randrange
 
 
 class State:
@@ -57,6 +58,9 @@ class State:
     def __eq__(self, other) -> bool:
         return sorted(self.stacks) == sorted(other.stacks)
 
+    def __lt__(self, other):
+        return self.cost + self.heuristic() < other.cost + other.heuristic()
+
     def heuristic(self):
         """
         Calculates the value of the heuristic function for the state.
@@ -82,7 +86,7 @@ class State:
         """
         Makes a deep copy of the state.
         """
-        return State(self.final_check, self.heuristics, deepcopy(self.stacks))
+        return State(self.final_check, self.heuristics, deepcopy(self.stacks), self.cost)
 
     def sprout(self):
         """
@@ -98,8 +102,8 @@ class State:
                     # don't create a new stack from a stack that has only one block
                     continue
                 state = self.copy()
-                state.cost += 1
                 state.move(source, destination)
+                state.cost += 1
                 states.append(state)
 
         return states
@@ -113,6 +117,17 @@ class State:
     def _level_to_str(self, level, max_digits):
         return "".join(str(stack[level] if level < len(stack) else "")
                        .rjust(max_digits + self.BLOCK_PADDING) for stack in self.stacks)
+
+    @staticmethod
+    def gen_layout(blocks, stacks):
+        block_sequence = list(range(blocks))
+        shuffle(block_sequence)
+
+        layout = [[block_sequence.pop()] for _ in range(stacks)]
+        for _ in range(len(block_sequence)):
+            layout[randrange(stacks)].append(block_sequence.pop())
+
+        return layout
 
 
 def blocks_outside_first_stack(stacks: State.STACKS_TYPE) -> int:

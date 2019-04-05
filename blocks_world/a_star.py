@@ -1,34 +1,22 @@
-from blocks_world.blocks import State, blocks_outside_first_stack, are_blocks_sorted_on_one_stack, blocks_sorted_on_first_stack
+from queue import PriorityQueue
 
-if __name__ == '__main__':
-    h = []
-    i = 0
-    s = State(
-        final_check=are_blocks_sorted_on_one_stack,
-        heuristics=[blocks_outside_first_stack, blocks_sorted_on_first_stack],
-        layout=[[1, 2, 5], [3, 4, 8, 7], [6, 9]],
-    )
-    print(s, end="".join(["=" for _ in range(16)] + ["\n\n"]))
 
-    G = [s]
-    Z = []
-    while len(G) > 0:
-        if s.is_final():
-            break
+def a_star(state):
+    open_set = PriorityQueue()
+    closed_set = []
 
-        for child in s.sprout():
-            if child not in Z:
-                G.append(child)
-        G.remove(s)
-        i = i + 1
+    open_set.put(state)
+    iterations = 0
 
-        for state in G:
-            h.append(state.cost + state.heuristic())
+    while not open_set.empty():
+        current_state = open_set.get()
+        closed_set.append(current_state)
 
-        m = min(h)
-        m = h.index(m)
-        s = G[m]
-        Z.append(s)
-        h.clear()
-        print('iteracja: ', i, '\n')
-        print(s)
+        if current_state.is_final():
+            return current_state, iterations
+
+        for child in current_state.sprout():
+            if child not in closed_set:
+                open_set.put(child)
+
+        iterations += 1
