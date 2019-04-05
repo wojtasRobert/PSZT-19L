@@ -54,6 +54,9 @@ class State:
                 if self.is_final() else "\n"
             ])
 
+    def __eq__(self, other) -> bool:
+        return sorted(self.stacks) == sorted(other.stacks)
+
     def heuristic(self):
         """
         Calculates the value of the heuristic function for the state.

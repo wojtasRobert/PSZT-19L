@@ -11,10 +11,14 @@ if __name__ == '__main__':
     print(s, end="".join(["=" for _ in range(16)] + ["\n\n"]))
 
     G = [s]
-    while not s.is_final():
+    Z = []
+    while len(G) > 0:
+        if s.is_final():
+            break
 
-        P = s.sprout()
-        G.extend(P)
+        for child in s.sprout():
+            if child not in Z:
+                G.append(child)
         G.remove(s)
         i = i + 1
 
@@ -24,6 +28,7 @@ if __name__ == '__main__':
         m = min(h)
         m = h.index(m)
         s = G[m]
+        Z.append(s)
         h.clear()
         print('iteracja: ', i, '\n')
         print(s)
