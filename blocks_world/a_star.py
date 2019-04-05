@@ -19,7 +19,7 @@ if __name__ == '__main__':
         i = i + 1
 
         for state in G:
-            h.append(state.heuristic())
+            h.append(state.cost + state.heuristic())
 
         m = min(h)
         m = h.index(m)

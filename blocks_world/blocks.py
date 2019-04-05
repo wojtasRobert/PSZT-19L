@@ -18,9 +18,16 @@ class State:
     heuristics: HEURISTICS_TYPE
     stacks: STACKS_TYPE
 
-    def __init__(self, final_check: FINAL_CHECK_TYPE, heuristics: HEURISTICS_TYPE, layout: STACKS_TYPE = None):
+    def __init__(
+            self,
+            final_check: FINAL_CHECK_TYPE,
+            heuristics: HEURISTICS_TYPE,
+            layout: STACKS_TYPE = None,
+            cost: int = 0,
+    ):
         self.final_check = final_check
         self.heuristics = heuristics
+        self.cost = cost
 
         if layout is None:
             layout = []
@@ -88,6 +95,7 @@ class State:
                     # don't create a new stack from a stack that has only one block
                     continue
                 state = self.copy()
+                state.cost += 1
                 state.move(source, destination)
                 states.append(state)
 
