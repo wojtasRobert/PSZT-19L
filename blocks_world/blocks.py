@@ -52,7 +52,7 @@ class State:
         Calculates the value of the heuristic function for the state.
         """
         # TODO: take all heuristics into account, not just the first
-        return 2*self.heuristics[0](self.stacks) + self.heuristics[1](self.stacks)
+        return max(h(self.stacks) for h in self.heuristics)
 
     def move(self, source, destination):
         """
