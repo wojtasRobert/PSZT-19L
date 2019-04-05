@@ -66,7 +66,7 @@ class State:
         Calculates the value of the heuristic function for the state.
         """
         # TODO: take all heuristics into account, not just the first
-        return max(h(self.stacks) for h in self.heuristics)
+        return self.heuristics[0](self.stacks)  # max(h(self.stacks) for h in self.heuristics)
 
     def move(self, source, destination):
         """
@@ -134,14 +134,40 @@ def blocks_outside_first_stack(stacks: State.STACKS_TYPE) -> int:
     return sum(len(stack) for stack in stacks) - len(stacks[0])
 
 
-def blocks_sorted_on_first_stack(stacks: State.STACKS_TYPE):  # -> int:
-    stack = stacks[0]
+def best_heuristic_ever(stacks: State.STACKS_TYPE) -> int:
     h = 0
+    """ first stack """
+    stack = stacks[0]
+
     for i in range(len(stack)):
-        if stack[i] == i+1:
+
+        if stack[i] == i:   # block placed well
             continue
-        h = 9 - i
-        break
+
+        elif stack[i] < i:  # case when block is above its target
+            h = h + (len(stack) - stack[i]) + 1
+
+        elif stack[i] > i:  # case when block is below its target
+            h = h + (len(stack) - i) + stack[i] - i + 1
+
+    """ other stacks """
+    for i in range(len(stacks)):
+
+        if i == 0:          # start from the second stack
+            continue
+
+        stack = stacks[i]
+
+        for j in range(len(stack)):     # go through all stacks
+
+            if len(stacks[0]) > stack[j]:   # position of our blocks is taken
+                h = h + len(stacks[0]) - stack[j]
+
+            elif len(stacks[0]) < stack[j]:  # lacks some block below our position
+                h = h + stack[j] - len(stacks[0])
+
+            h = h + len(stack) - j  # setting a block free and moving it
+
     return h
 
 
