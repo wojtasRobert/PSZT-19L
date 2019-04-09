@@ -21,9 +21,11 @@ class State:
             layout: STACKS_TYPE = None,
             heuristics: HEURISTICS_TYPE = None,
             cost: int = 0,
+            parent = None,
     ):
         self.heuristics = heuristics
         self.cost = cost
+        self.parent = parent
 
         if layout is None:
             layout = []
@@ -77,7 +79,7 @@ class State:
         """
         Makes a deep copy of the state.
         """
-        return State(deepcopy(self.stacks), self.heuristics, self.cost)
+        return State(deepcopy(self.stacks), self.heuristics, self.cost, self)
 
     def sprout(self):
         """
@@ -98,6 +100,15 @@ class State:
                 states.append(state)
 
         return states
+
+    def print_backtrace(self):
+        backtrace = [self]
+        
+        while backtrace[-1].parent is not None:
+            backtrace.append(backtrace[-1].parent)
+
+        for state in reversed(backtrace):
+            print(str(state))
 
     def _level_to_str(self, level, max_digits):
         return "".join(str(stack[level] if level < len(stack) else "")

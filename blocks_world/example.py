@@ -9,7 +9,6 @@ if __name__ == '__main__':
         layout=State.gen_layout(BLOCKS, STACKS),
         heuristics=[misplaced_blocks, best_heuristic_ever],
     )
-    print(start_state, end="".join(["=" for _ in range(16)] + ["\n\n"]))
 
     # for state in start_state.sprout():
     #     print('h = ', state.heuristic(), '\n')
@@ -17,7 +16,7 @@ if __name__ == '__main__':
 
     try:
         final_s, i = a_star(start_state, State([list(range(BLOCKS))]))
-        print(final_s)
+        final_s.print_backtrace()
         print("Iterations:", i)
         print("Steps:", final_s.cost)
     except TooManyIterations:
