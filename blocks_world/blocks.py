@@ -1,8 +1,8 @@
 from copy import deepcopy
 from functools import reduce
 from itertools import chain
-from typing import List, Callable
 from random import shuffle, randrange
+from typing import List, Callable
 
 
 class State:
@@ -21,7 +21,7 @@ class State:
             layout: STACKS_TYPE = None,
             heuristics: HEURISTICS_TYPE = None,
             cost: int = 0,
-            parent = None,
+            parent=None,
     ):
         self.heuristics = heuristics
         self.cost = cost
@@ -103,7 +103,7 @@ class State:
 
     def print_backtrace(self):
         backtrace = [self]
-        
+
         while backtrace[-1].parent is not None:
             backtrace.append(backtrace[-1].parent)
 
@@ -146,7 +146,7 @@ def best_heuristic_ever(stacks: State.STACKS_TYPE) -> int:
 
     for i in range(len(stack)):
 
-        if stack[i] == i:   # block placed well
+        if stack[i] == i:  # block placed well
             continue
 
         elif stack[i] < i:  # case when block is above its target
@@ -158,14 +158,14 @@ def best_heuristic_ever(stacks: State.STACKS_TYPE) -> int:
     """ other stacks """
     for i in range(len(stacks)):
 
-        if i == 0:          # start from the second stack
+        if i == 0:  # start from the second stack
             continue
 
         stack = stacks[i]
 
-        for j in range(len(stack)):     # go through all stacks
+        for j in range(len(stack)):  # go through all stacks
 
-            if len(stacks[0]) > stack[j]:   # position of our blocks is taken
+            if len(stacks[0]) > stack[j]:  # position of our blocks is taken
                 h = h + len(stacks[0]) - stack[j] + len(stack) - j
             elif len(stacks[0]) < stack[j]:  # lacks some block below our position
                 h = h + len(stack) - j

@@ -4,6 +4,7 @@ from queue import PriorityQueue
 class TooManyIterations(Exception):
     pass
 
+
 def a_star(state, final, max_iterations=300):
     open_set = PriorityQueue()
     closed_set = []

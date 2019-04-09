@@ -1,8 +1,8 @@
 from functools import reduce
 from unittest import TestCase
 
-from .blocks import State, best_heuristic_ever, misplaced_blocks
-from .a_star import a_star
+from blocks_world.a_star import a_star
+from blocks_world.blocks import State, best_heuristic_ever, misplaced_blocks
 
 
 class TestBlocks(TestCase):
