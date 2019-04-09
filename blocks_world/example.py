@@ -1,5 +1,6 @@
 from blocks_world.a_star import a_star, TooManyIterations
-from blocks_world.blocks import State, best_heuristic_ever, misplaced_blocks
+from blocks_world.heuristics import best_heuristic_ever, misplaced_blocks
+from blocks_world.model import State
 
 if __name__ == '__main__':
     BLOCKS = 6
