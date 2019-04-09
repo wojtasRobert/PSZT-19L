@@ -1,7 +1,10 @@
 from queue import PriorityQueue
 
 
-def a_star(state, final):
+class TooManyIterations(Exception):
+    pass
+
+def a_star(state, final, max_iterations=300):
     open_set = PriorityQueue()
     closed_set = []
 
@@ -14,6 +17,9 @@ def a_star(state, final):
 
         if current_state == final:
             return current_state, iterations
+
+        if iterations > max_iterations:
+            raise TooManyIterations
 
         for child in current_state.sprout():
             if child not in closed_set:

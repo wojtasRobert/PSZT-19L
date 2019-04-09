@@ -1,5 +1,5 @@
 from blocks_world.blocks import State, blocks_outside_first_stack, best_heuristic_ever, misplaced_blocks
-from blocks_world.a_star import a_star
+from blocks_world.a_star import a_star, TooManyIterations
 
 if __name__ == '__main__':
     BLOCKS = 6
@@ -15,7 +15,12 @@ if __name__ == '__main__':
     #     print('h = ', state.heuristic(), '\n')
     #     # print(state)
 
-    final_s, i = a_star(start_state, State([list(range(BLOCKS))]))
-    print(final_s)
-    print("Iterations:", i)
-    print("Steps:", final_s.cost)
+    try:
+        final_s, i = a_star(start_state, State([list(range(BLOCKS))]))
+        print(final_s)
+        print("Iterations:", i)
+        print("Steps:", final_s.cost)
+    except TooManyIterations:
+        print("Too many iterations")
+        exit(1)
+
