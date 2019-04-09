@@ -1,4 +1,4 @@
-from queue import PriorityQueue
+from heapq import heappush, heappop
 
 
 class TooManyIterations(Exception):
@@ -6,14 +6,14 @@ class TooManyIterations(Exception):
 
 
 def a_star(state, final, max_iterations=300):
-    open_set = PriorityQueue()
+    open_set = []
     closed_set = []
 
-    open_set.put(state)
+    heappush(open_set, state)
     iterations = 0
 
-    while not open_set.empty():
-        current_state = open_set.get()
+    while len(open_set) > 0:
+        current_state = heappop(open_set)
         closed_set.append(current_state)
 
         if current_state == final:
@@ -24,6 +24,6 @@ def a_star(state, final, max_iterations=300):
 
         for child in current_state.sprout():
             if child not in closed_set:
-                open_set.put(child)
+                heappush(open_set, child)
 
         iterations += 1
