@@ -8,25 +8,20 @@ from random import shuffle, randrange
 class State:
     BLOCK_PADDING = 2
     TABLE_PADDING = 1
-    FINAL_TEXT = "FINAL"
 
     STACKS_TYPE = List[List[int]]
-    FINAL_CHECK_TYPE = Callable[[STACKS_TYPE], bool]
     HEURISTIC_TYPE = Callable[[STACKS_TYPE], int]
     HEURISTICS_TYPE = List[Callable[[STACKS_TYPE], int]]
 
-    final_check: FINAL_CHECK_TYPE
     heuristics: HEURISTICS_TYPE
     stacks: STACKS_TYPE
 
     def __init__(
             self,
-            final_check: FINAL_CHECK_TYPE,
-            heuristics: HEURISTICS_TYPE,
             layout: STACKS_TYPE = None,
+            heuristics: HEURISTICS_TYPE = None,
             cost: int = 0,
     ):
-        self.final_check = final_check
         self.heuristics = heuristics
         self.cost = cost
 
@@ -44,15 +39,9 @@ class State:
                 reversed(range(max_stack_height)),
                 "",
             )] + [
-                "-" for _ in range(
-                    max(
-                        len(self.stacks) * (max_digits + self.BLOCK_PADDING) + self.TABLE_PADDING,
-                        len(self.FINAL_TEXT) + 2 * self.TABLE_PADDING,
-                    )
-                )
+                "-" for _ in range(len(self.stacks) * (max_digits + self.BLOCK_PADDING) + self.TABLE_PADDING)
             ] + [
-                ("\n" + "".join(" " for _ in range(self.TABLE_PADDING)) + self.FINAL_TEXT + "\n")
-                if self.is_final() else "\n"
+                "\n"
             ])
 
     def __eq__(self, other) -> bool:
@@ -65,6 +54,9 @@ class State:
         """
         Calculates the value of the heuristic function for the state.
         """
+        if self.heuristics is None:
+            return 0
+
         return max(h(self.stacks) for h in self.heuristics)
 
     def move(self, source, destination):
@@ -85,7 +77,7 @@ class State:
         """
         Makes a deep copy of the state.
         """
-        return State(self.final_check, self.heuristics, deepcopy(self.stacks), self.cost)
+        return State(deepcopy(self.stacks), self.heuristics, self.cost)
 
     def sprout(self):
         """
@@ -106,12 +98,6 @@ class State:
                 states.append(state)
 
         return states
-
-    def is_final(self):
-        """
-        Checks if the state is final by executing its final_check function.
-        """
-        return self.final_check(self.stacks)
 
     def _level_to_str(self, level, max_digits):
         return "".join(str(stack[level] if level < len(stack) else "")
@@ -174,10 +160,3 @@ def best_heuristic_ever(stacks: State.STACKS_TYPE) -> int:
                 h = h + len(stack) - j
 
     return 4 * h
-
-
-def are_blocks_sorted_on_one_stack(stacks: State.STACKS_TYPE, reverse=False) -> bool:
-    if len(stacks) != 1:
-        return False
-    stack = stacks[0]
-    return stack == sorted(stack, reverse=reverse)

@@ -5,13 +5,13 @@ from .blocks import State
 
 class TestBlocks(TestCase):
     def test_heuristics(self):
-        self.assertEqual(State(None, [lambda s: 0]).heuristic(), 0)
-        self.assertEqual(State(None, [lambda s: 42]).heuristic(), 42)
-        self.assertEqual(State(None, [lambda s: 42, lambda s: 40]).heuristic(), 42)
-        self.assertEqual(State(None, [lambda s: 32, lambda s: 35]).heuristic(), 35)
+        self.assertEqual(State(heuristics=[lambda s: 0]).heuristic(), 0)
+        self.assertEqual(State(heuristics=[lambda s: 42]).heuristic(), 42)
+        self.assertEqual(State(heuristics=[lambda s: 42, lambda s: 40]).heuristic(), 42)
+        self.assertEqual(State(heuristics=[lambda s: 32, lambda s: 35]).heuristic(), 35)
 
     def test_move(self):
-        state = State(None, None, [[1, 2, 3], [4, 5, 6]])
+        state = State([[1, 2, 3], [4, 5, 6]])
 
         state.move(0, -1)
         self.assertEqual([[1, 2], [4, 5, 6], [3]], state.stacks)
