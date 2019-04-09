@@ -65,8 +65,7 @@ class State:
         """
         Calculates the value of the heuristic function for the state.
         """
-        # TODO: take all heuristics into account, not just the first
-        return self.heuristics[0](self.stacks) + 4*self.heuristics[1](self.stacks)  # max(h(self.stacks) for h in self.heuristics)
+        return max(h(self.stacks) for h in self.heuristics)
 
     def move(self, source, destination):
         """
@@ -174,7 +173,7 @@ def best_heuristic_ever(stacks: State.STACKS_TYPE) -> int:
             elif len(stacks[0]) < stack[j]:  # lacks some block below our position
                 h = h + len(stack) - j
 
-    return h
+    return 4 * h
 
 
 def are_blocks_sorted_on_one_stack(stacks: State.STACKS_TYPE, reverse=False) -> bool:
