@@ -77,16 +77,18 @@ można ustawić maksymalną liczbę iteracji, której przekroczenie skutkować b
 
 ## Instrukcja użytkownika
 
-Będąc użytkownikiem naszego programu, jedyne co musimy zrobić to przemyśleć liczbę bloków i liczbę stosów w stanie początkowym. Następnie naszym zadaniem jest przypisanie tych wartości 
-odpowiednim zmiennym (BLOCKS, STACKS) w skrypcie `example.py`. Kolejnym krokiem jest uruchomienie skryptu. W konsoli pojawi się jedna z dwóch wiadomości:
+Będąc użytkownikiem naszego programu, mamy wpływ na kilka znaczących kwestii takich jak dobór heurystyk, liczba klocków i stosów oraz maksymalna liczba iteracji. Musimy przemyśleć liczbę bloków i liczbę stosów w stanie początkowym. Następnie naszym zadaniem jest przypisanie tych wartości 
+odpowiednim zmiennym (BLOCKS, STACKS) w skrypcie `example.py`. W tym samym skrypcie mamy możliwość określenia pożądanych heurystyk, wpisując ich nazwy w odpowiednie miejsce w konstruktorze.
+ Tolerowaną liczbą iteracji możemy zmienić w pliku `a_star.py` przypisując wartość do zmiennej `max_iterations` w definicji funkcji `a_star`. Kolejnym krokiem jest uruchomienie skryptu `example.py`. 
+ W konsoli pojawi się jedna z dwóch wiadomości:
 
-* Too many iterations! - oznaczające porażkę w poszukiwaniach optymalnej sekwencji operatorów prowadzących do prawidłowego ustawienia klocków
+* Too many iterations! - oznaczające przekroczenie liczby iteracji a co za tym idzie porażkę w poszukiwaniach optymalnej sekwencji operatorów prowadzących do prawidłowego ustawienia klocków
 * Liczba wykonanych iteracji oraz kroków potrzebnych na posortowanie klocków na pierwszym stosie oznacza sukces. Powyżej wyświetlane są stany od początkowego do terminalnego. 
 
 ## Wkład autorów
 
 * Krystian Chachuła
-	* model problemu
+	* model Stanu problemu
 	* optymalizacja szybkości działania algorytmu A* przy wykorzystaniu kolejki priorytetowej
 	* testy
 	
