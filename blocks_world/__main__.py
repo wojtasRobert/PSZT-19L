@@ -43,11 +43,6 @@ parser.add_argument(
     help="If set, every state in the solution will be displayed along with other extra info.",
 )
 parser.add_argument(
-    '--terminal', '-t',
-    type=str,
-    help="Terminal block arrangement (see --initial). If --random is set, defaults to blocks sorted on one stack.",
-)
-parser.add_argument(
     '--iterations', '-it',
     type=int,
     default=300,
