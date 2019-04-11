@@ -19,7 +19,10 @@ początkowej, i następnie przedstawienie wynikowej minimalnej sekwencji ruchów
 
 * Projekt został napisany w języku Python.
 * Program działa w trybie wsadowym. Wyniki działania wizualizowane są w konsoli.
-* Wykorzystanie kilku funkcji heurystycznych i przyjmowanie wartości h(s) dla stanu s jako maksymalna wartość z zawartych funkcji.
+* Reprezentacja stanu jako lista list. Listę zewnętrzną uznajemy za stół, a listy wewnętrzne za stosy klocków. Jest to wygodne ze względu na częste iterowanie po elementach stanu.
+* Utworzenie klasy `State` reprezentującą stan rozwiązania problemu. Stan jest podstawową jednostką, na której operujemy podczas wykonania programu. Stany są wyświetlane i rozwijane, do tego aby przejść z jednego stanu do drugiego należy wykonać zdefiniowany w zadaniu ruch. Uznaliśmy, że najlepszym i najwygodniejszym rozwiązaniem będzie działanie na stanach jako obiektach klasy poprzez wywołyłanie jej metod. 
+* Zawarcie w klasie `State` pola `heuristics` w celu umożliwienia dodania kilku funkcji heurystycznych dla zadania. Wartość h(s) dla stanu s wybierana jako maksymalna wartość z zawartych funkcji heurystycznych.
+* Wykorzystanie kilku funkcji heurystycznych. Funkcje zdefiniowane w odrębnym pliku, uniwersalne dla różnych układów problemu.
 
 ## Struktura programu
 
@@ -28,11 +31,11 @@ Podczas tworzenia projektu poszczególne elementy zadania zostały zrealizowane 
 * `model.py` - klasa `State` reprezentująca stan aktualnie rozwiązywanego problemu. Konstruktor klasy przyjmuje rozstawienie klocków w stanie początkowym (liczba klocków i stosów) oraz listę zawierającą nazwy funkcji heurystycznych.
  W tym miejsu zostały zaimplementowane takie elementy jak operatory porównania oraz znak mniejszości, a także wszystkie możliwe funkcje reprezentujące czynności, które w danym 
  stanie możemy wykonać:
-	* `heuristic` - funkcja obliczająca wartość funkcji heurystycznej dla danego stanu jako wartość maksymalna z .
+	* `heuristic` - funkcja obliczająca wartość funkcji heurystycznej dla danego stanu jako wartość maksymalna ze wszystkich wartości zwróconych przez zawarte funkcje heurystyczne. Mając kilka heurystyk będących dolnym oszacowaniem kosztu dotarcia do stanu terminalnego rozsądnie jest wybrać największą wartość.
 	* `move` - funkcja wykonująca ruch z jednego stosu klocków na inny, przyjmuje jako argumenty numer stosu źródłowego i numer stosu docelowego.
 	* `copy` - wykonuje głęboką kopię stanu 
 	* `sprout` - rozwinięcie stanu na wszyskie możliwe sposoby osiągane poprzez przeiterowanie przez wszystkie możliwe stosy źrółowe i wszystkie docelowe. Stany pochodne zwracane jako lista.
-	* `print_backtrace` - drukuje sekwencję ruchów potrzebnych do otrzymania stanu terminalnego
+	* `print_backtrace` - drukuje sekwencję ruchów potrzebnych do otrzymania stanu terminalnego. Zrealizowane dzięki użyciu pola klasy o nazwie `parent`. Iterując wstecz po kolejno wybieranych stanach w łatwy sposób możemy otrzymać poprzednika każdego z nich co skutkuje prostym wyświetlaniem sekwencji kolejnych stanów od początkowego do terminalnego.
 	* `_level_to_str` -
 	* `gen_layout` - generacja losowego stanu początkowego	
 
@@ -64,7 +67,9 @@ znajdujących się aktualnie nad badanym klockiem oraz liczba klocków znajdują
 
 Plik, w którym została zaimplementowana funkcja wykonująca algorytm A*. Wersja algorytmu została zaczerpnięta ze skryptu autorstwa dra Pawła Wawrzyńśkiego. Początkowo algorytm 
 realizowany był z wykorzystaniem list Pythona i funkcji na nich operujących. Następnie jednak została dokonana optymalizacja działania programu poprzez zastosowanie rodzaju kolejki
-priorytetowej `heapq` oraz operujących na niej funkcji `heappush` i `heappop`. Algorytm wykonywany jest w pętli dopóki zbiór stanów otwartych jest niepusty. Przed rozpoczęciem pętli
+priorytetowej `heapq` oraz operujących na niej funkcji `heappush` i `heappop`. Kolejka `heapq` jest wykorzystywana przez kolejkę `PriorityQueue`, która jednak poza uwzględnieniem priorytetów
+dodawanych obiektów, zapewnia bezpieczeństwo wątków. Nasz program działa w jednym wątku dlatego używamy `heapq`, co skutkuje szybszym działaniem. Kolejnym usprawnieniem było dodanie 
+zbioru stanów zbadanych do algorytmu. Miało to na celu uniknięcie powielania tych samych stanów w zbiorze stanów otwartych. Algorytm wykonywany jest w pętli dopóki zbiór stanów otwartych jest niepusty. Przed rozpoczęciem pętli
 można ustawić maksymalną liczbę iteracji, której przekroczenie skutkować będzie wyjątkiem `TooManyIterations` oraz traktowane będzie jako porażka w znalezieniu optymalej sekwencji ruchów.
 
 ## Lista wykorzystanych narzędzi
