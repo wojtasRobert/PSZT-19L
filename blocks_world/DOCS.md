@@ -25,7 +25,7 @@ początkowej, i następnie przedstawienie wynikowej minimalnej sekwencji ruchów
 
 Podczas tworzenia projektu poszczególne elementy zadania zostały zrealizowane w oddzielnych plikach:
 
-* `model.py` - klasa reprezentująca stan problemu. Konstruktor klasy przyjmuje rozstawienie klocków w stanie początkowym (liczba klocków i stosów) oraz listę zawierającą nazwy funkcji heurystycznych.
+* `model.py` - klasa `State` reprezentująca stan aktualnie rozwiązywanego problemu. Konstruktor klasy przyjmuje rozstawienie klocków w stanie początkowym (liczba klocków i stosów) oraz listę zawierającą nazwy funkcji heurystycznych.
  W tym miejsu zostały zaimplementowane takie elementy jak operatory porównania oraz znak mniejszości, a także wszystkie możliwe funkcje reprezentujące czynności, które w danym 
  stanie możemy wykonać:
 	* `heuristic` - funkcja obliczająca wartość funkcji heurystycznej dla danego stanu jako wartość maksymalna z .
@@ -46,7 +46,7 @@ Plik zawierający zaimplementowane funkcje heurystyczne, które można wykorzyst
 
 #### `blocks_outside_first_stack`
 
-Funkcja zwraca liczbę kolcków znajdującą się poza pierwszym stosem. W praktyce okazała się mało efektywna ze względu braku uwzględnienia sortowania kolcków.
+Funkcja zwraca liczbę kolcków znajdującą się poza pierwszym stosem. W praktyce okazała się mało efektywna ze względu na brak uwzględnienia sortowania kolcków.
 
 #### `misplaced_blocks`
 
@@ -62,3 +62,35 @@ znajdujących się aktualnie nad badanym klockiem oraz liczba klocków znajdują
 
 ### `a_star.py`
 
+Plik, w którym została zaimplementowana funkcja wykonująca algorytm A*. Wersja algorytmu została zaczerpnięta ze skryptu autorstwa dra Pawła Wawrzyńśkiego. Początkowo algorytm 
+realizowany był z wykorzystaniem list Pythona i funkcji na nich operujących. Następnie jednak została dokonana optymalizacja działania programu poprzez zastosowanie rodzaju kolejki
+priorytetowej `heapq` oraz operujących na niej funkcji `heappush` i `heappop`. Algorytm wykonywany jest w pętli dopóki zbiór stanów otwartych jest niepusty. Przed rozpoczęciem pętli
+można ustawić maksymalną liczbę iteracji, której przekroczenie skutkować będzie wyjątkiem `TooManyIterations` oraz traktowane będzie jako porażka w znalezieniu optymalej sekwencji ruchów.
+
+## Lista wykorzystanych narzędzi
+
+* biblioteka `heapq`, funkcje: `heappop`, `heappush` w celu optymalizacji działania algorytmu
+* biblioteki `functools`, `unittest` do testowania programu
+* biblioteka `copy`, funkcja `deepcopy` używana przy rozwijaniu stanów
+* biblioteka `random`, funkcje `shuffle` i `randrange` wykorzystywane przy generacji rozmieszczenia początkowego
+* biblioteka `typing`, elementy `List`, `Callable` używane przy tworzeniu typów używanych w modelu 
+
+## Instrukcja użytkownika
+
+Będąc użytkownikiem naszego programu, jedyne co musimy zrobić to przemyśleć liczbę bloków i liczbę stosów w stanie początkowym. Następnie naszym zadaniem jest przypisanie tych wartości 
+odpowiednim zmiennym (BLOCKS, STACKS) w skrypcie `example.py`. Kolejnym krokiem jest uruchomienie skryptu. W konsoli pojawi się jedna z dwóch wiadomości:
+
+* Too many iterations! - oznaczające porażkę w poszukiwaniach optymalnej sekwencji operatorów prowadzących do prawidłowego ustawienia klocków
+* Liczba wykonanych iteracji oraz kroków potrzebnych na posortowanie klocków na pierwszym stosie oznacza sukces. Powyżej wyświetlane są stany od początkowego do terminalnego. 
+
+## Wkład autorów
+
+* Krystian Chachuła
+	* model problemu
+	* optymalizacja szybkości działania algorytmu A* przy wykorzystaniu kolejki priorytetowej
+	* testy
+	
+* Robert Wojtaś
+	* pierwotna implementacja algorytmu A*
+	* implementacja funkcji heurystycznych
+	* dokumentacja
