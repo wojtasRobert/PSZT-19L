@@ -52,7 +52,6 @@ parser.add_argument(
 args = parser.parse_args()
 
 initial = literal_eval(args.initial) if args.initial else None
-terminal = literal_eval(args.terminal) if args.terminal else None
 
 if not (args.initial or args.random) or (args.initial and args.random):
     print("You need to pass --initial or --random (but not both).", file=stderr)
@@ -85,9 +84,7 @@ start_state = State(
 
 # Count blocks
 terminal_state = None
-if terminal:
-    terminal_state = State(terminal)
-elif args.blocks:
+if args.blocks:
     terminal_state = State([list(range(args.blocks))])
 else:
     terminal_state = State([sorted(reduce(lambda a, b: a + b, start_state.stacks, []))])
