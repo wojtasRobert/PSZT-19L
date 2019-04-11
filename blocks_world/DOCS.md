@@ -91,6 +91,33 @@ odpowiednim zmiennym (BLOCKS, STACKS) w skrypcie `example.py`. W tym samym skryp
 * Too many iterations! - oznaczające przekroczenie liczby iteracji a co za tym idzie porażkę w poszukiwaniach optymalnej sekwencji operatorów prowadzących do prawidłowego ustawienia klocków
 * Liczba wykonanych iteracji oraz kroków potrzebnych na posortowanie klocków na pierwszym stosie oznacza sukces. Powyżej wyświetlane są stany od początkowego do terminalnego. 
 
+## Analiza wyników
+
+* Rozwiązaliśmy 500 problemów dla każdego wiersza tabeli.
+* Limit iteracji wynosił 400.
+
+| Blocks | Stacks | AvgIt | StdIt | AvgCost | StdCost | AvgCToI% | Fails% |
+|--------|--------|-------|-------|---------|---------|----------|--------|
+| 2      | 2      | 2.00  | 0.00  | 1.00    | 0.00    | 50.00    | 0      |
+| 3      | 1      | 5.87  | 2.58  | 3.15    | 1.48    | 48.55    | 0      |
+| 3      | 2      | 4.72  | 1.88  | 2.49    | 0.78    | 55.94    | 0      |
+| 3      | 3      | 3.90  | 1.43  | 2.00    | 0.00    | 56.73    | 0      |
+| 4      | 1      | 17.93 | 16.71 | 6.65    | 2.16    | 58.29    | 0      |
+| 4      | 2      | 17.35 | 17.74 | 5.54    | 1.95    | 59.14    | 0      |
+| 4      | 3      | 16.23 | 14.97 | 4.79    | 1.62    | 55.21    | 0      |
+| 4      | 4      | 12.87 | 13.69 | 3.91    | 1.34    | 57.95    | 0      |
+| 5      | 1      | 33.05 | 36.72 | 10.69   | 2.91    | 60.57    | 9      |
+| 5      | 2      | 35.38 | 42.35 | 9.60    | 3.03    | 60.12    | 9      |
+| 5      | 3      | 36.30 | 42.41 | 8.63    | 2.81    | 54.30    | 7      |
+| 5      | 4      | 30.51 | 39.91 | 7.50    | 2.81    | 57.10    | 8      |
+| 5      | 5      | 27.52 | 36.18 | 6.76    | 2.36    | 56.69    | 7      |
+| 6      | 1      | 62.45 | 88.88 | 13.06   | 2.64    | 59.28    | 22     |
+| 6      | 2      | 41.98 | 65.21 | 11.44   | 3.02    | 66.70    | 25     |
+| 6      | 3      | 54.23 | 86.30 | 10.93   | 2.97    | 60.35    | 25     |
+| 6      | 4      | 53.15 | 85.39 | 9.74    | 2.79    | 61.24    | 22     |
+| 6      | 5      | 41.13 | 68.22 | 8.69    | 2.63    | 61.31    | 22     |
+| 6      | 6      | 42.30 | 70.04 | 7.90    | 2.54    | 58.97    | 21     |
+
 ## Wkład autorów
 
 * Krystian Chachuła
