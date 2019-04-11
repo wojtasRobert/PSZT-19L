@@ -16,6 +16,8 @@ def a_star(state, final, max_iterations=300):
         current_state = heappop(open_set)
         closed_set.append(current_state)
 
+iterations += 1
+
         if current_state == final:
             return current_state, iterations
 
@@ -26,4 +28,3 @@ def a_star(state, final, max_iterations=300):
             if child not in closed_set:
                 heappush(open_set, child)
 
-        iterations += 1
