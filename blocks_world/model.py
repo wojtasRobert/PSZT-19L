@@ -115,7 +115,6 @@ class State:
             if print_states:
                 print(str(state))
 
-
     def _level_to_str(self, level, max_digits):
         return "".join(str(stack[level] if level < len(stack) else "")
                        .rjust(max_digits + self.BLOCK_PADDING) for stack in self.stacks)

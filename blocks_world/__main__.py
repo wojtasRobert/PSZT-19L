@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
-from sys import stderr
-from functools import reduce
 from ast import literal_eval
+from functools import reduce
+from sys import stderr
 
 from blocks_world.a_star import a_star, TooManyIterations
 from blocks_world.heuristics import best_heuristic_ever, misplaced_blocks
@@ -82,7 +82,6 @@ if args.random and not (args.v or args.verbose):
         file=stderr
     )
     exit(1)
-
 
 start_state = State(
     layout=State.gen_layout(args.blocks, args.stacks) if args.random else initial,
