@@ -38,6 +38,7 @@ Podczas tworzenia projektu poszczególne elementy zadania zostały zrealizowane 
 	* `print_backtrace` - drukuje sekwencję ruchów potrzebnych do otrzymania stanu terminalnego. Zrealizowane dzięki użyciu pola klasy o nazwie `parent`. Iterując wstecz po kolejno wybieranych stanach w łatwy sposób możemy otrzymać poprzednika każdego z nich co skutkuje prostym wyświetlaniem sekwencji kolejnych stanów od początkowego do terminalnego.
 	* `_level_to_str` -
 	* `gen_layout` - generacja losowego stanu początkowego	
+	* Równość stanów została zdefiniowana w taki sposób, że dwa stany o stosach z tymi samymi elementami, ale różniących się rozmieszczeniem na stole są sobie równe. 
 
 * `tests.py` - plik zawierający testy jednostkowe	
 * `heuristics.py` 
