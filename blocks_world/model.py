@@ -26,6 +26,7 @@ class State:
         self.heuristics = heuristics
         self.cost = cost
         self.parent = parent
+        self.operator = None
 
         if layout is None:
             layout = []
@@ -74,6 +75,7 @@ class State:
             self.stacks[destination].append(block)
         if not self.stacks[source]:
             del self.stacks[source]
+        self.operator = [source, destination]
 
     def copy(self):
         """
@@ -101,14 +103,18 @@ class State:
 
         return states
 
-    def print_backtrace(self):
+    def print_backtrace(self, print_states=False):
         backtrace = [self]
 
         while backtrace[-1].parent is not None:
             backtrace.append(backtrace[-1].parent)
 
         for state in reversed(backtrace):
-            print(str(state))
+            if state.operator:
+                print("{} -> {}".format(*state.operator))
+            if print_states:
+                print(str(state))
+
 
     def _level_to_str(self, level, max_digits):
         return "".join(str(stack[level] if level < len(stack) else "")
