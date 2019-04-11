@@ -102,6 +102,9 @@ class State:
                 states.append(state)
 
         return states
+    
+    def make_final(self):
+        return State([sorted(reduce(lambda a, b: a + b, self.stacks, []))])
 
     def print_backtrace(self, print_states=False):
         backtrace = [self]

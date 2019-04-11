@@ -82,12 +82,7 @@ start_state = State(
     heuristics=[misplaced_blocks, estimate_moves],
 )
 
-# Count blocks
-terminal_state = None
-if args.blocks:
-    terminal_state = State([list(range(args.blocks))])
-else:
-    terminal_state = State([sorted(reduce(lambda a, b: a + b, start_state.stacks, []))])
+terminal_state = start_state.make_final()
 
 try:
     final_s, i = a_star(
