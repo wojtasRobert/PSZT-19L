@@ -2,7 +2,7 @@ from functools import reduce
 from unittest import TestCase
 
 from blocks_world.a_star import a_star
-from blocks_world.heuristics import best_heuristic_ever, misplaced_blocks
+from blocks_world.heuristics import estimate_moves, misplaced_blocks
 from blocks_world.model import State
 
 
@@ -39,7 +39,7 @@ class TestAStar(TestCase):
     def _test_layout(self, layout):
         initial = State(
             layout=layout,
-            heuristics=[misplaced_blocks, best_heuristic_ever],
+            heuristics=[misplaced_blocks, estimate_moves],
         )
         final = State([sorted(reduce(lambda a, b: a + b, initial.stacks, []))])
 

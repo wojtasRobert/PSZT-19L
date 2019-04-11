@@ -14,7 +14,7 @@ def misplaced_blocks(stacks: State.STACKS_TYPE) -> int:
     return h
 
 
-def best_heuristic_ever(stacks: State.STACKS_TYPE) -> int:
+def estimate_moves(stacks: State.STACKS_TYPE) -> int:
     h = 0
     """ first stack """
     stack = stacks[0]

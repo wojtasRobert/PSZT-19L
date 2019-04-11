@@ -1,5 +1,5 @@
 from blocks_world.a_star import a_star, TooManyIterations
-from blocks_world.heuristics import best_heuristic_ever, misplaced_blocks
+from blocks_world.heuristics import estimate_moves, misplaced_blocks
 from blocks_world.model import State
 
 if __name__ == '__main__':
@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
     start_state = State(
         layout=State.gen_layout(BLOCKS, STACKS),
-        heuristics=[misplaced_blocks, best_heuristic_ever],
+        heuristics=[misplaced_blocks, estimate_moves],
     )
 
     # for state in start_state.sprout():
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     try:
         final_s, i = a_star(start_state, State([list(range(BLOCKS))]))
-        final_s.print_backtrace()
+        final_s.print_backtrace(print_states=True)
         print("Iterations:", i)
         print("Steps:", final_s.cost)
     except TooManyIterations:
