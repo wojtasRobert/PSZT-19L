@@ -48,7 +48,7 @@ class State:
             ])
 
     def __eq__(self, other) -> bool:
-        return sorted(self.stacks) == sorted(other.stacks)
+        return self.stacks == other.stacks
 
     def __lt__(self, other):
         return self.cost + self.heuristic() < other.cost + other.heuristic()
@@ -99,10 +99,14 @@ class State:
                 state = self.copy()
                 state.move(source, destination)
                 state.cost += 1
+
+                assert state not in states
+                assert state != self
+
                 states.append(state)
 
         return states
-    
+
     def make_final(self):
         return State([sorted(reduce(lambda a, b: a + b, self.stacks, []))])
 
