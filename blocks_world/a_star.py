@@ -5,7 +5,7 @@ class TooManyIterations(Exception):
     pass
 
 
-def a_star(state, final, max_iterations=300):
+def a_star(state, final, max_iterations=300, step=False):
     open_set = []
     closed_set = []
 
@@ -17,6 +17,10 @@ def a_star(state, final, max_iterations=300):
         closed_set.append(current_state)
 
         iterations += 1
+
+        if step:
+            print(current_state)
+            input()
 
         if current_state == final:
             return current_state, iterations

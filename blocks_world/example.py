@@ -16,7 +16,7 @@ if __name__ == '__main__':
     #     # print(state)
 
     try:
-        final_s, i = a_star(start_state, State([list(range(BLOCKS))]))
+        final_s, i = a_star(start_state, State([list(range(BLOCKS))]), step=False)
         final_s.print_backtrace(print_states=True)
         print("Iterations:", i)
         print("Steps:", final_s.cost)
