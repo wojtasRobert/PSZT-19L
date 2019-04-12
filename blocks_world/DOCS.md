@@ -50,17 +50,14 @@ Plik zawierający zaimplementowane funkcje heurystyczne, które można wykorzyst
 
 Funkcja zwraca liczbę kolcków znajdującą się poza pierwszym stosem. W praktyce okazała się mało efektywna ze względu na brak uwzględnienia sortowania kolcków.
 
-#### `misplaced_blocks`
+#### `move_once_or_twice`
 
-Funkcja sprawdzająca prawidłowe rozmieszczenie klocków na stole, przy czym za prawidłowe uznawane jest ustawienie na pierwszym stosie, na pozycji odpowiadającej numerowi 
-danego klocka. Wartość `h` jest zwiększana za każdy klocek, który znajduje się poza pierwszym stosem oraz za klocki na pierwszym stosie, które znajdują się na złej pozycji. 
-W przypadku prawidłowego położenia klocka wartość `h` nie zwiększana.
-
-#### `estimate_moves`
-
-Funkcja szacująca ilość ruchów potrzebnych na przełożenie każdego klocka na prawowite miejsce. Dla pierwszego stosu rozważane są przypadki ustawienia klocka na miejscu 
-poniżej i powyżej docelowego. W razie wykrycia takiej sytuacji, wartość `h` jest odpowiednio zwiększana. Dla stosów poza wartością dodawaną do `h` jest liczba klocków 
-znajdujących się aktualnie nad badanym klockiem oraz liczba klocków znajdujących się na stosie pierwszym, nad pozycją docelowa danego klocka. 
+Omawiana heurystyka szacuje ilość potrzebnych do wykonania ruchów operujących na danym klocku, w celu przemieszczenia go na docelową pozycję. Dopuszczalne scenariusze to jeden lub
+dwa ruchy przypadające na brany pod uwagę klocek. Funkcja dla każdego stanu bada wszystkie stosy zaczynając od najwyższego. Dopóki pozycja klocka zgadza się z jego pozycją docelową wartość `h` nie jest zwiększana. 
+W momencie napotkania klocka o nieprawidłowej pozycji `h` jest zwiększane o ilość klocków ponad aktualnie badanym (plus klocek badany). Dla tych klockó należy wykonać co najmniej 
+dwa ruchy. Dla pozostałych stosów, klocek leżący na stole zawsze wymaga tylko jednego ruchu. Każdy inny klocek wymaga jednego lub dwóch ruchów, w zależności od tego czy numer klocka 
+jest większy lub mniejszy od klocka bezpośrednio pod nim. W programie zostały utworzone zmienne `h1` i `h2` odpowiadające ilości klocków wymagających jednego ruchu i ilości klocków 
+wymagających dwóch ruchów. Funkcja `move_once_or_twice` zwraca sumę `h1 + h2`. 
 
 ### `a_star.py`
 
