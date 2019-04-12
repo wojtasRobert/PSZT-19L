@@ -62,3 +62,34 @@ def estimate_moves(stacks: State.STACKS_TYPE) -> int:
                 h = h + len(stack) - j
 
     return 4 * h
+
+
+def move_once_or_twice(stacks: State.STACKS_TYPE) -> int:
+    h1 = 0
+    h2 = 0
+
+    """ first stack """
+    stack = stacks[0]
+
+    for i in range(len(stack)):
+        if stack[i] != i:
+            h2 = len(stack) - i
+            break
+
+    """ other stacks """
+    for i in range(len(stacks)):
+        if i == 0:  # start from the second stack
+            continue
+
+        stack = stacks[i]
+
+        for j in range(len(stack)):
+            if j == 0:
+                h1 += 1
+
+            if stack[j] > stack[j-1]:
+                h2 += 1
+            else:
+                h1 += 1
+
+    return h1 + h2
