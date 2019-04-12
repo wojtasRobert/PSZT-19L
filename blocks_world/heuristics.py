@@ -1,8 +1,10 @@
+from functools import reduce
+
 from blocks_world.model import State
 
 
 def blocks_outside_first_stack(stacks: State.STACKS_TYPE) -> int:
-    return sum(len(stack) for stack in stacks) - len(stacks[0])
+    return reduce(lambda a, b: a + len(b), stacks, 0) - len(stacks[0])
 
 
 def misplaced_blocks(stacks: State.STACKS_TYPE) -> int:
