@@ -3,8 +3,22 @@ from functools import reduce
 from blocks_world.model import State
 
 
-def blocks_outside_first_stack(stacks: State.STACKS_TYPE) -> int:
-    return reduce(lambda a, b: a + len(b), stacks, 0) - len(stacks[0])
+def blocks_outside_biggest_stack(stacks: State.STACKS_TYPE) -> int:
+    return reduce(lambda a, b: a + len(b), stacks, 0) - len(max(stacks, key=lambda x: len(x)))
+
+
+def unsorted_biggest_stack_blocks(stacks: State.STACKS_TYPE) -> int:
+    largest = max(stacks, key=lambda x: len(x))
+    sorted_first = sorted(largest)
+
+    unsorted_blocks = 0
+    for idx in range(min(len(sorted_first), len(stacks))):
+        if sorted_first[idx] != largest[idx]:
+            unsorted_blocks += 1
+
+    unsorted_blocks += max(0, len(stacks[0]) - len(sorted_first))
+
+    return unsorted_blocks
 
 
 def misplaced_blocks(stacks: State.STACKS_TYPE) -> int:

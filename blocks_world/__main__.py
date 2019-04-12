@@ -1,6 +1,5 @@
 from argparse import ArgumentParser
 from ast import literal_eval
-from functools import reduce
 from sys import stderr
 
 from blocks_world.a_star import a_star, TooManyIterations

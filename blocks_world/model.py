@@ -48,7 +48,7 @@ class State:
             ])
 
     def __eq__(self, other) -> bool:
-        return self.stacks == other.stacks
+        return sorted(self.stacks) == sorted(other.stacks)
 
     def __lt__(self, other):
         return self.cost + self.heuristic() < other.cost + other.heuristic()
@@ -109,6 +109,12 @@ class State:
 
     def make_final(self):
         return State([sorted(reduce(lambda a, b: a + b, self.stacks, []))])
+
+    def count_blocks(self):
+        return reduce(lambda a, b: a + len(b), self.stacks, 0)
+
+    def count_stacks(self):
+        return len(self.stacks)
 
     def print_backtrace(self, print_states=False):
         backtrace = [self]

@@ -1,5 +1,10 @@
+# This is an example script that shows the usage of this module.
+# You can run it by executing `python3 -m blocks_world.example`.
+# One can try to experiment by changing `BLOCKS` and `STACKS` below
+# to change the parameters of random problem generation.
+
 from blocks_world.a_star import a_star, TooManyIterations
-from blocks_world.heuristics import estimate_moves, misplaced_blocks
+from blocks_world.heuristics import unsorted_biggest_stack_blocks, estimate_moves, misplaced_blocks, blocks_outside_biggest_stack
 from blocks_world.model import State
 
 if __name__ == '__main__':
@@ -8,12 +13,8 @@ if __name__ == '__main__':
 
     start_state = State(
         layout=State.gen_layout(BLOCKS, STACKS),
-        heuristics=[misplaced_blocks, estimate_moves],
+        heuristics=[unsorted_biggest_stack_blocks, blocks_outside_biggest_stack],
     )
-
-    # for state in start_state.sprout():
-    #     print('h = ', state.heuristic(), '\n')
-    #     # print(state)
 
     try:
         final_s, i = a_star(start_state, State([list(range(BLOCKS))]), step=False)
