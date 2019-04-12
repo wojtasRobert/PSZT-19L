@@ -4,7 +4,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from blocks_world.model import State
 from blocks_world.a_star import a_star, TooManyIterations
-from blocks_world.heuristics import estimate_moves, misplaced_blocks
+from blocks_world.heuristics import estimate_moves, misplaced_blocks, blocks_outside_first_stack
 
 
 def do_analysis(blocks, stacks, each):
@@ -13,10 +13,10 @@ def do_analysis(blocks, stacks, each):
     costs_over_iterations = []
 
     fails = 0
-    for _ in range(EACH):
+    for _ in range(each):
         initial_state = State(
             layout=State.gen_layout(blocks, stacks),
-            heuristics=[misplaced_blocks, estimate_moves],
+            heuristics=[blocks_outside_first_stack],
         )
         try:
             final_state, it = a_star(
@@ -42,26 +42,26 @@ def do_analysis(blocks, stacks, each):
 
 
 if __name__ == '__main__':
-    EACH = 500
-
-    print("{:>7s} {:>7s} {:>7s} {:>7s} {:>7s} {:>7s} {:>7s} {:>7s}"
-          .format("BLOCKS", "STACKS", "AVGIT", "STDIT", "AVGCOST", "STDCOST", "CTOVRIT%", "FAILS%"))
+    EACH = 1000
+    MAX_BLOCKS = 4
 
     with ProcessPoolExecutor(max_workers=12) as executor:
         future_to_result = {}
 
-        for blocks in range(2, 7):
+        for blocks in range(2, MAX_BLOCKS + 1):
             for stacks in range(1, blocks + 1):
                 future_to_result[executor.submit(do_analysis, blocks, stacks, EACH)] = (blocks, stacks)
 
         results = []
 
         for future in as_completed(future_to_result):
-            print(blocks, stacks, file=stderr)
+            print("{:.2f}%".format(100 * len(results) / len(future_to_result)), file=stderr)
             blocks, stacks = future_to_result[future]
-            results.append("{:7d} {:7d} {:7.2f} {:7.2f} {:7.2f} {:7.2f} {:7.2f} {:7.0f}".format(
+            results.append("{:7d} {:7d} {:7.2f} {:7.2f} {:7.2f} {:7.2f} {:7.2f} {:7.2f}".format(
                 *future.result()
             ))
 
+        print("{:>7s} {:>7s} {:>7s} {:>7s} {:>7s} {:>7s} {:>7s} {:>7s}"
+              .format("BLOCKS", "STACKS", "AVGIT", "STDIT", "AVGCOST", "STDCOST", "CTOVRIT%", "FAILS%"))
         for result in sorted(results):
             print(result)
