@@ -68,20 +68,18 @@ def move_once_or_twice(stacks: State.STACKS_TYPE) -> int:
     h1 = 0
     h2 = 0
 
-    """ first stack """
-    stack = stacks[0]
+    """ biggest stack """
+    largest = max(stacks, key=lambda x: len(x))
 
-    for i in range(len(stack)):
-        if stack[i] != i:
-            h2 = len(stack) - i
+    for i in range(len(largest)):
+        if largest[i] != i:
+            h2 = len(largest) - i
             break
 
     """ other stacks """
-    for i in range(len(stacks)):
-        if i == 0:  # start from the second stack
+    for stack in stacks:
+        if stack == largest:
             continue
-
-        stack = stacks[i]
 
         for j in range(len(stack)):
             if j == 0:
