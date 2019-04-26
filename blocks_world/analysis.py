@@ -5,9 +5,8 @@ from statistics import mean, stdev
 from sys import stderr
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-from blocks_world.model import State
 from blocks_world.a_star import a_star, TooManyIterations
-from blocks_world.heuristics import estimate_moves, misplaced_blocks, blocks_outside_biggest_stack, unsorted_biggest_stack_blocks
+from blocks_world.heuristics import *
 
 
 def do_analysis(blocks, stacks, each):
@@ -19,17 +18,17 @@ def do_analysis(blocks, stacks, each):
     for _ in range(each):
         initial_state = State(
             layout=State.gen_layout(blocks, stacks),
-            heuristics=[misplaced_blocks],
+            heuristics=[blocks_outside_biggest_stack, unsorted_biggest_stack_blocks, move_once_or_twice],
         )
         try:
             final_state, it = a_star(
                 state=initial_state,
                 final=initial_state.make_final(),
-                max_iterations=1000,
+                max_iterations=500,
             )
             iterations.append(it)
             costs.append(final_state.cost)
-            costs_over_iterations.append(final_state.cost / it)
+            costs_over_iterations.append(final_state.cost / it if it != 0 else 1)
         except TooManyIterations:
             fails += 1
     return (
@@ -45,14 +44,14 @@ def do_analysis(blocks, stacks, each):
 
 
 if __name__ == '__main__':
-    EACH = 100
+    EACH = 500
     MAX_BLOCKS = 6
     DIAGONAL_ONLY = False
 
     with ProcessPoolExecutor(max_workers=12) as executor:
         future_to_result = {}
 
-        for blocks in range(1, MAX_BLOCKS + 1):
+        for blocks in range(2, MAX_BLOCKS + 1):
             for stacks in range(1, blocks + 1):
                 if DIAGONAL_ONLY and blocks != stacks:
                     continue

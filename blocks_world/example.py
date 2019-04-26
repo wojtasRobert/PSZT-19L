@@ -4,7 +4,7 @@
 # to change the parameters of random problem generation.
 
 from blocks_world.a_star import a_star, TooManyIterations
-from blocks_world.heuristics import unsorted_biggest_stack_blocks, estimate_moves, misplaced_blocks, blocks_outside_biggest_stack
+from blocks_world.heuristics import *
 from blocks_world.model import State
 
 if __name__ == '__main__':
@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     start_state = State(
         layout=State.gen_layout(BLOCKS, STACKS),
-        heuristics=[unsorted_biggest_stack_blocks, blocks_outside_biggest_stack],
+        heuristics=[blocks_outside_biggest_stack, unsorted_biggest_stack_blocks, move_once_or_twice],
     )
 
     try:

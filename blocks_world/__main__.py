@@ -3,7 +3,7 @@ from ast import literal_eval
 from sys import stderr
 
 from blocks_world.a_star import a_star, TooManyIterations
-from blocks_world.heuristics import estimate_moves, misplaced_blocks
+from blocks_world.heuristics import *
 from blocks_world.model import State
 
 parser = ArgumentParser(
@@ -14,7 +14,7 @@ parser.add_argument(
     '--initial',
     '-i',
     type=str,
-    help="How blocks are initially arranged into stacks. Ex. [[2, 1, 3], [4]]. The inner lists are stacks.",
+    help="How blocks are initially arranged into stacks. Ex. [[2,1,3],[4]]. The inner lists are stacks.",
 )
 parser.add_argument(
     '--random', '-r',
@@ -44,8 +44,24 @@ parser.add_argument(
 parser.add_argument(
     '--iterations', '-it',
     type=int,
-    default=300,
+    default=500,
     help="Maximum number of iterations.",
+)
+HEURISTICS = {
+    0: [blocks_outside_biggest_stack, unsorted_biggest_stack_blocks, move_once_or_twice],
+    1: [blocks_outside_biggest_stack],
+    2: [unsorted_biggest_stack_blocks],
+    3: [move_once_or_twice],
+}
+HEURISTICS_HELP = "0 -- deafult, max of all heuristics; " \
+                  "1 -- blocks_outside_biggest_stack; " \
+                  "2 -- unsorted_biggest_stack_blocks; " \
+                  "3 -- move_once_or_twice"
+parser.add_argument(
+    '--heuristics', '-he',
+    type=int,
+    default=0,
+    help="Choose heuristics used for the calculations." + HEURISTICS_HELP
 )
 
 args = parser.parse_args()
@@ -75,10 +91,13 @@ if args.random and not (args.v or args.verbose):
         file=stderr
     )
     exit(1)
+if args.heuristics >= len(HEURISTICS):
+    print("--heuristics out of range, see --help", file=stderr)
+    exit(1)
 
 start_state = State(
     layout=State.gen_layout(args.blocks, args.stacks) if args.random else initial,
-    heuristics=[misplaced_blocks, estimate_moves],
+    heuristics=HEURISTICS[args.heuristics],
 )
 
 terminal_state = start_state.make_final()
@@ -102,5 +121,5 @@ try:
         print(final_s)
 
 except TooManyIterations:
-    print("Too many iterations", file=stderr)
+    print("Too many iterations, try increasing the default limit (500) with --iterations flag.", file=stderr)
     exit(1)

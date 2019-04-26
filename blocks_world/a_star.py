@@ -12,8 +12,6 @@ def a_star(state, final, max_iterations=300, step=False):
     iterations = 0
 
     while len(open_set) > 0:
-        iterations += 1
-
         current_state = heappop(open_set)
 
         if step:
@@ -35,6 +33,7 @@ def a_star(state, final, max_iterations=300, step=False):
                 # child is not in the open_set
                 heappush(open_set, child)
 
+        iterations += 1
         if iterations > max_iterations:
             raise TooManyIterations
 
